@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/BasicTemplate.xhtml">
+<ui:define name="content">
+<script type="text/javascript">
+PrimeFaces.locales['es'] = {
+    closeText: 'Cerrar',
+    prevText: 'Anterior',
+    nextText: 'Siguiente',
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    weekHeader: 'Semana',
+    firstDayOfWeek: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+    timeOnlyTitle: 'Sólo hora',
+    timeText: 'Tiempo',
+    hourText: 'Hora',
+    minuteText: 'Minuto',
+    secondText: 'Segundo',
+    currentText: 'Fecha actual',
+    ampm: false,
+    month: 'Mes',
+    week: 'Semana',
+    day: 'Día',
+    allDayText: 'Todo el día'
+};
+</script>
+	  
+	  	<p:growl id="growl" life="2000" showDetail="true" />
+	
+	    <p:panel id="panelNotas" header="Gestionar Notas"
+	    	footer="Total #{notaView.notas.size()}" widgetVar="panelNotas">
+	    	
+	    	<p:commandButton value="Listar" icon="fa fa-list"
+	    		action="#{notaView.init()}" update=":panelNotas" />
+			
+			<p:commandButton value="Nuevo" icon="fa fa-plus"
+				oncomplete="PF('dialog').show();" />
+	    
+	    	<p:dataTable var="nta" value="#{notaView.notas}">
+	    	
+	    		<p:column headerText="CODIGO NOTA">
+	    			<h:outputText value="#{nta.codigoNota}"/>
+	    		</p:column>
+	    		<p:column headerText="EXAMEN PARCIAL">
+	    			<h:outputText value="#{nta.examenParcial}"/>
+	    		</p:column>
+	    		<p:column headerText="EXAMEN 1">
+	    			<h:outputText value="#{nta.examen1}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="EXAMEN 2">
+	    			<h:outputText value="#{nta.examen2}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="NOTA ACTITUDINAL">
+	    			<h:outputText value="#{nta.notaActitudinal}"/>
+	    		</p:column>	 
+	    		<p:column headerText="NOTA VIRTUAL">
+	    			<h:outputText value="#{nta.notaVirtual}"/>
+	    		</p:column>	
+	    		<p:column headerText="PROMEDIO">
+	    			<h:outputText value="#{nta.promedio}"/>
+	    		</p:column>
+	    		<p:column headerText="NOMBRE AlUMNO">
+	    			<h:outputText value="#{nta.alumno.nombreAlumno}"/>
+	    		</p:column>	
+	    		
+	    		<p:column headerText="NOMBRE CURSO">
+	    			<h:outputText value="#{nta.curso.nombreCurso}"/>
+	    		</p:column>	
+	    			    		
+	    		<p:column headerText="OPCIONES">
+	    			<p:commandButton icon="fa fa-refresh"
+	    				action="#{notaView.buscar(nta.codigoNota)}"
+	    				oncomplete="PF('dialog').show();"
+	    				update="dialogId"
+	    			/>
+
+	    			<p:commandButton icon="fa fa-remove"
+	    				action="#{notaView.eliminar(nta.codigoNota)}"
+	    				update=":growl :panelNotas"/>
+	    		</p:column>		    		   		   	
+	    	</p:dataTable>
+	    	
+	    	
+	    	<p:dialog id="dialogId" header="Nuevo" widgetVar="dialog" 
+	    		modal="true" style="position: absolute" >
+	    		<h:panelGrid columns="2" cellpadding="3" style="margin-bottom:200px">
+	    		
+	    			<h:outputText value="EXAMEN PARCIAL"/>
+	    			<p:inputText value="#{notaView.nota.examenParcial}"/>
+	    			
+	    			<h:outputText value="EXAMEN 1"/>
+	    			<p:inputText value="#{notaView.nota.examen1}"/>
+	    			
+	    			<h:outputText value="EXAMEN 2"/>
+	    			<p:inputText value="#{notaView.nota.examen2}"/>
+	    			
+					<h:outputText value="NOTA ACTITUDINAL"/>
+	    			<p:inputText value="#{notaView.nota.notaActitudinal}"/>	  
+	    			
+	    			<h:outputText value="NOTA VIRTUAL"/>
+	    			<p:inputText value="#{notaView.nota.notaVirtual}"/>
+	    			
+	    			<h:outputText value="PROMEDIO"/>
+	    			<p:inputText value="#{notaView.nota.promedio}"/>
+	    			  		
+	    			<h:outputText value="Alumno"/>
+	    			<p:selectOneMenu value="#{notaView.nota.alumno.codigoAlumno}">
+	    				<f:selectItems var="alumno" value="#{alumnoView.alumnos}"
+	    					itemLabel="#{alumno.nombreAlumno}" itemValue="#{alumno.codigoAlumno}">
+	    				</f:selectItems>	    			
+	    			</p:selectOneMenu>	
+	    			
+	    			<h:outputText value="Curso"/>
+	    			<p:selectOneMenu value="#{notaView.nota.curso.codigoCurso}">
+	    				<f:selectItems var="curso" value="#{cursoView.cursos}"
+	    					itemLabel="#{curso.nombreCurso}" itemValue="#{curso.codigoCurso}">
+	    				</f:selectItems>	    			
+	    			</p:selectOneMenu>	
+	    			
+<!-- 	    			<p:commandButton value="Calcular" action="#{Nota.calculo}"></p:commandButton> -->
+	    			
+	    			<p:commandButton value="Registrar" action="#{notaView.registrar}"
+	    				update=":growl :panelNotas" oncomplete="PF('dialog').hide();" />
+	    		</h:panelGrid>
+	    	
+	    	</p:dialog>
+	    	
+	    	
+	    </p:panel>  
+	  
+	  
+	  
+	</ui:define>
+</ui:composition>
+</html>

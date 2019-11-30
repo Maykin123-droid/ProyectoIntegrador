@@ -1,0 +1,11 @@
+pe\edu\cibertec\webapp\repository\EmpleadoRepository.class
+pe\edu\cibertec\webapp\entity\Curso.class
+pe\edu\cibertec\webapp\entity\Nota.class
+pe\edu\cibertec\webapp\entity\Tarea.class
+pe\edu\cibertec\webapp\repository\CursoRepository.class
+pe\edu\cibertec\webapp\ServletInitializer.class
+pe\edu\cibertec\webapp\entity\Alumno.class
+pe\edu\cibertec\webapp\entity\Empleado.class
+pe\edu\cibertec\webapp\repository\AlumnoRepository.class
+pe\edu\cibertec\webapp\view\EmpleadoView.class
+pe\edu\cibertec\webapp\WebappApplication.class

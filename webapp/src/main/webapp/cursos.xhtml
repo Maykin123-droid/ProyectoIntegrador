@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	
+<ui:composition template="/WEB-INF/template/BasicTemplate.xhtml">
+	<ui:define name="content">
+	
+<script type="text/javascript">
+PrimeFaces.locales['es'] = {
+    closeText: 'Cerrar',
+    prevText: 'Anterior',
+    nextText: 'Siguiente',
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+    weekHeader: 'Semana',
+    firstDayOfWeek: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: '',
+    timeOnlyTitle: 'Sólo hora',
+    timeText: 'Tiempo',
+    hourText: 'Hora',
+    minuteText: 'Minuto',
+    secondText: 'Segundo',
+    currentText: 'Fecha actual',
+    ampm: false,
+    month: 'Mes',
+    week: 'Semana',
+    day: 'Día',
+    allDayText: 'Todo el día'
+};
+</script>
+	
+	<p:growl id="growl" life="2000" showDetail="true" />
+	
+	    <p:panel id="panelCursos" header="Gestionar Cursos"
+	    	footer="Total #{cursoView.cursos.size()}" widgetVar="panelCursos">
+	    	
+	    	<p:commandButton value="Listar" icon="fa fa-list"
+	    		action="#{cursoView.init()}" update=":panelCursos" />
+			
+			<p:commandButton value="Nuevo" icon="fa fa-plus"
+				oncomplete="PF('dialog').show();" />
+	    
+	    	<p:dataTable var="cur" value="#{cursoView.cursos}">
+	    		<p:column headerText="CODIGO CURSO">
+	    			<h:outputText value="#{cur.codigoCurso}"/>
+	    		</p:column>
+	    		<p:column headerText="ASISTENCIA">
+	    			<h:outputText value="#{cur.asistencia}"/>
+	    		</p:column>
+	    		<p:column headerText="HORARIO">
+	    			<h:outputText value="#{cur.horario}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="NOMBRE CURSO">
+	    			<h:outputText value="#{cur.nombreCurso}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="PROFESOR">
+	    			<h:outputText value="#{cur.profesor}"/>
+	    		</p:column>	 
+	    		<p:column headerText="AULA">
+	    			<h:outputText value="#{cur.salon}"/>
+	    		</p:column>	
+	    		<p:column headerText="TEMA">
+	    			<h:outputText value="#{cur.tema}"/>
+	    		</p:column>	
+	    		<p:column headerText="NOMBRE ALUMNO">
+	    			<h:outputText value="#{cur.alumno.nombreAlumno}"/>
+	    		</p:column>		    		
+	    		<p:column headerText="OPCIONES">
+	    			<p:commandButton icon="fa fa-refresh"
+	    				action="#{cursoView.buscar(cur.codigoCurso)}"
+	    				oncomplete="PF('dialog').show();"
+	    				update="dialogId"
+	    			/>
+
+	    			<p:commandButton icon="fa fa-remove"
+	    				action="#{cursoView.eliminar(cur.codigoCurso)}"
+	    				update=":growl :panelCursos"/>
+	    		</p:column>		    		   		   	
+	    	</p:dataTable>
+	    	
+	    	
+	    	<p:dialog id="dialogId" header="Nuevo" widgetVar="dialog" 
+	    		modal="true" style="position: absolute" >
+	    		<h:panelGrid columns="2" cellpadding="3" style="margin-bottom:200px">
+	    		
+	    			<h:outputText value="ASISTENCIA"/>
+	    			<p:inputText value="#{cursoView.curso.asistencia}"/>
+	    			
+	    			<h:outputText value="HORARIO"/>
+	    			<p:inputText value="#{cursoView.curso.horario}"/>
+	    			
+	    			<h:outputText value="NOMBRE CURSO"/>
+	    			<p:inputText value="#{cursoView.curso.nombreCurso}"/>
+	    			
+					<h:outputText value="PROFESOR"/>
+	    			<p:inputText value="#{cursoView.curso.profesor}"/>	  
+	    			
+	    			<h:outputText value="AULA"/>
+	    			<p:inputText value="#{cursoView.curso.salon}"/>
+	    			
+	    			<h:outputText value="TEMA"/>
+	    			<p:inputText value="#{cursoView.curso.tema}"/>	  		
+	    			
+	    			<h:outputText value="Alumno"/>
+	    			<p:selectOneMenu value="#{cursoView.curso.alumno.codigoAlumno}">
+	    				<f:selectItems var="alumno" value="#{alumnoView.alumnos}"
+	    					itemLabel="#{alumno.nombreAlumno}" itemValue="#{alumno.codigoAlumno}">
+	    				</f:selectItems>	    			
+	    			</p:selectOneMenu>	
+	    			<p:commandButton value="Registrar" action="#{cursoView.registrar}"
+	    				update=":growl :panelCursos" oncomplete="PF('dialog').hide();" />
+	    		</h:panelGrid>
+	    	
+	    	</p:dialog>
+	    	
+	    	
+	    </p:panel>  
+	  
+	</ui:define>
+</ui:composition>
+</html>

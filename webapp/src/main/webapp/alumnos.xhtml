@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/BasicTemplate.xhtml">
+	<ui:define name="content">
+	    
+	    		<p:growl id="growl" life="2000" showDetail="true" />
+
+		<p:panel id="panelAlumnos" header="Gestionar Alumnos"
+			footer="Total #{alumnoView.alumnos.size()}" widgetVar="panelAlumnos">
+
+			<p:commandButton value="Listar" icon="fa fa-list"
+				action="#{alumnoView.init()}"  style="margin-right:10px;" update=":panelAlumnos"/>
+				
+			<p:commandButton process="@this" value="Nuevo" icon="fa fa-plus"
+				oncomplete="PF('dialog').show();" update=":dialogId" >
+				<p:resetInput target=":dialogId" />		
+			</p:commandButton>
+
+			<p:dataTable var="alu" value="#{alumnoView.alumnos}" style="margin-top:10px" rows="5" paginator="true">
+			
+				<p:column headerText="CODIGO_ALUMNO">
+					<h:outputText value="#{alu.codigoAlumno}" />
+				</p:column>
+
+				<p:column headerText="CELULAR">
+					<h:outputText value="#{alu.celular}" />
+				</p:column>
+				
+				<p:column headerText="CICLO">
+					<h:outputText value="#{alu.ciclo}" />
+				</p:column>
+				
+				<p:column headerText="DIRECCION">
+					<h:outputText value="#{alu.direccion}" />
+				</p:column>
+				
+				<p:column headerText="DNI">
+					<h:outputText value="#{alu.dni}" />
+				</p:column>
+				
+				<p:column headerText="NOMBRE_ALUMNO">
+					<h:outputText value="#{alu.nombreAlumno}" />
+				</p:column>
+				
+				<p:column headerText="OPCIONES">
+					<p:commandButton action="#{alumnoView.buscar(alu.codigoAlumno)}" icon="fa fa-refresh" oncomplete="PF('dialog').show();" 
+					style="margin-right:5px;" update="dialogId" />
+					
+					<p:commandButton action="#{alumnoView.eliminar(cat)}" icon="fa fa-remove" update=":growl :panelAlumnos" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:dialog id="dialogId" header="Nuevo" widgetVar="dialog" modal="true" style="position: absolute">
+			<h:panelGrid columns="2" cellpadding="3" style="margin-bottom:10px">
+				<h:outputText value="CELULAR" />
+				<p:inputText id="username1" value="#{alumnoView.alumno.celular}"/>
+				
+				<h:outputText value="CICLO" />
+				<p:inputText id="username2" value="#{alumnoView.alumno.ciclo}"/>
+				
+				<h:outputText value="DIRECCION" />
+				<p:inputText id="username3" value="#{alumnoView.alumno.direccion}"/>
+				
+				<h:outputText value="DNI" />
+				<p:inputText id="username4" value="#{alumnoView.alumno.dni}"/>
+				
+				<h:outputText value="NOMBRE_ALUMNO" />
+				<p:inputText id="username5" value="#{alumnoView.alumno.nombreAlumno}"/>
+			</h:panelGrid>
+			<p:commandButton value="Registrar"
+						action="#{alumnoView.registrar}" update=":growl :panelAlumnos" oncomplete="PF('dialog').hide();" />
+		</p:dialog>
+	    
+	</ui:define>
+</ui:composition>
+</html>

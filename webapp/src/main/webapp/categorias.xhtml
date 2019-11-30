@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/WEB-INF/template/BasicTemplate.xhtml">
+	<ui:define name="content">
+
+		<p:growl id="growl" life="2000" showDetail="true" />
+
+		<p:panel id="panelCategorias" header="Gestionar Categorias"
+			footer="Total #{categoriaView.categorias.size()}" widgetVar="panelCategorias">
+
+			<p:commandButton value="Listar" icon="fa fa-list"
+				action="#{categoriaView.init()}"  style="margin-right:10px;" update=":panelCategorias"/>
+				
+			<p:commandButton process="@this" value="Nuevo" icon="fa fa-plus"
+				oncomplete="PF('dialog').show();" update=":dialogId" >
+				<p:resetInput target=":dialogId" />		
+			</p:commandButton>
+
+			<p:dataTable var="cat" value="#{categoriaView.categorias}" style="margin-top:10px" rows="5" paginator="true">
+				<p:column headerText="ID">
+					<h:outputText value="#{cat.idCategoria}" />
+				</p:column>
+
+				<p:column headerText="DESCRIPCIÓN">
+					<h:outputText value="#{cat.descripcion}" />
+				</p:column>
+				
+				<p:column headerText="OPCIONES">
+					<p:commandButton action="#{categoriaView.buscar(cat.idCategoria)}" icon="fa fa-refresh" oncomplete="PF('dialog').show();" 
+					style="margin-right:5px;" update="dialogId" />
+					
+					<p:commandButton action="#{categoriaView.eliminar(cat)}" icon="fa fa-remove" update=":growl :panelCategorias" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:dialog id="dialogId" header="Nuevo" widgetVar="dialog" modal="true" style="position: absolute">
+			<h:panelGrid columns="2" cellpadding="3" style="margin-bottom:10px">
+				<h:outputText value="Descripción" />
+				<p:inputText id="username" value="#{categoriaView.categoria.descripcion}"/>
+			</h:panelGrid>
+			<p:commandButton value="Registrar"
+						action="#{categoriaView.registrar}" update=":growl :panelCategorias" oncomplete="PF('dialog').hide();" />
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>
+</html>

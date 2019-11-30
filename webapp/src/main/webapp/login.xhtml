@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+
+<h:body>
+	<div class="ui-g">
+		<div class="ui-g-4" />
+		<div class="ui-g-4">
+			<h:form prependId="false" style="width: max-content;">
+				<p:fieldset id="login" legend="Acceso al Sistema">
+					<p:messages />
+					<h:panelGrid columns="3" cellpadding="3" style="margin-bottom:10px">
+						<h:outputText value="Usuario" />
+						<p:inputText id="usuario" value="#{empleadoView.usuario}" />
+						<p:message for="usuario" display="icon" />
+						<h:outputText value="Contraseña" />
+						<p:password id="clave" value="#{empleadoView.clave}" />
+						<p:message for="clave" display="icon" />
+					</h:panelGrid>
+					<p:commandButton value="Ingresar" update="login"
+						action="#{empleadoView.login}" />
+				</p:fieldset>
+			</h:form>
+		</div>
+		<div class="ui-g-4" />
+	</div>
+
+</h:body>
+</html>
