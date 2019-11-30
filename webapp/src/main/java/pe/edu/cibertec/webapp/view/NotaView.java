@@ -51,6 +51,14 @@ public class NotaView implements Serializable {
 	
 	
 	public void registrar() {
+		
+		double promedio = (nota.getExamen1()+  nota.getExamen2() + nota.getExamenParcial() + nota.getNotaActitudinal()
+		+ nota.getNotaVirtual()) / 5;
+		
+		nota.setPromedio(promedio);
+		
+		
+		
 		boolean exits = notaRepository.existsById(nota.getCodigoNota());
 		Alumno alu = alumnoRepository.findById(nota.getAlumno().getCodigoAlumno()).get();
 		Curso cur = cursoRepository.findById(nota.getCurso().getCodigoCurso()).get();
